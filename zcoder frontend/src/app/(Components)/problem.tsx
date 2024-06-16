@@ -1,103 +1,213 @@
+"use client";
+
 import { Avatar } from "@nextui-org/avatar";
 import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
 import { MdOutlineModeComment } from "react-icons/md";
 import { IoArchiveOutline } from "react-icons/io5";
+import { problemData, commentData } from "./interface";
+import Comments from "./comment";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
+const problemsData: problemData[] = [
+  {
+    questionId: "1",
+    email: "randomized_1@email.com",
+    questionHeader: "Brain Teaser!",
+    question:
+      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+    answer:
+      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+    isPublic: true,
+  },
+  {
+    questionId: "2",
+    email: "randomized_1@email.com",
+    questionHeader: "Brain Teaser!",
+    question:
+      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+    answer:
+      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+    isPublic: true,
+  },
+  {
+    questionId: "3",
+    email: "randomized_1@email.com",
+    questionHeader: "Brain Teaser!",
+    question:
+      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+    answer:
+      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+    isPublic: true,
+  },
+  // Add more problems as needed
+];
 
-export default function Problem() {
-  const users: userData[] = [
-    {
-      email: "randomized_1@email.com",
-      questionHeader: "Brain Teaser!",
-      question:
-        "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
-      answer:
-        "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
-      comments: [
-        {
-          email: "commenter1@example.com",
-          comment: "Interesting question! I never thought of this approach.",
-        },
-        {
-          email: "commenter2@example.com",
-          comment: "This solution is clever, but can you explain why it works?",
-        },
-      ],
-    },
-    {
-      email: "randomized_2@email.com",
-      questionHeader: "Level Up!",
-      question:
-        "Express the number 72 using addition (+) and subtraction (-) of the numbers 18 and 9.",
-      answer:
-        "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (18 - 9) * 2 + 9;\n  return 0;\n}\n`",
-      comments: [
-        {
-          email: "commenter3@example.com",
-          comment: "This was a bit tricky, but the solution is elegant!",
-        },
-      ],
-    },
-    {
-      email: "randomized_3@email.com",
-      questionHeader: "Think Outside the Box!",
-      question:
-        "Is it possible to create the number 2023 using addition (+) only with the numbers 2, 3, and 5?",
-      answer:
-        "// This answer may vary depending on the chosen approach.\nNo, it's not possible to create 2023 using only addition with the numbers 2, 3, and 5. The sum of these numbers will always be even, and 2023 is odd.\n",
-      comments: [
-        {
-          email: "commenter4@example.com",
-          comment: "I see why it's not possible. Great explanation!",
-        },
-        {
-          email: "commenter5@example.com",
-          comment: "Could there be any other approach to this problem?",
-        },
-      ],
-    },
-  ];
+const commentsData: commentData[] = [
+  {
+    questionId: "1",
+    email: "commenter1@example.com",
+    comment: "Interesting question! I never thought of this approach.",
+  },
+  {
+    questionId: "1",
+    email: "commenter2@example.com",
+    comment: "This solution is clever, but can you explain why it works?",
+  },
+  {
+    questionId: "1",
+    email: "commenter1@example.com",
+    comment: "Interesting question! I never thought of this approach.",
+  },
+  {
+    questionId: "3",
+    email: "commenter2@example.com",
+    comment: "This solution is clever, but can you explain why it works?",
+  },
+  // Add more comments as needed
+];
+
+const problems: React.FC = () => {
+  
+  const [questionHeader, setQuestionHeader] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [isPublic, setIsPublic] = useState<boolean>(false);
+  const [problemData, setProblemData] = useState<problemData[]>([]);
+
+  const [newCommentData, setNewCommentData] = useState<commentData[]>([]);
+
+  const handleCommentSubmit = (comment: commentData) => {
+    const newComments = [...commentsData, comment];
+    setNewCommentData(newComments);
+  };
+
+  const handleSubmitProblem = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const problemDataToSend: Omit<problemData, 'questionId'> = {
+      email: "user@example.com",
+      questionHeader,
+      question,
+      answer,
+      isPublic,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:8000/api/problem", problemDataToSend);
+
+      console.log("Submitted Problem Data: ", response.data);
+
+      setProblemData(prevProblemData => [...prevProblemData, response.data])
+
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+
+    setQuestionHeader("");
+    setQuestion("");
+    setAnswer("");
+    setIsPublic(false);
+  }
+
+  const fetchProblems = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/problem/public");
+
+      console.log("Fetched Problem Data: ", response.data);
+
+      setProblemData(response.data)
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProblems();
+  }, []);
 
   return (
-    <div className="text-black bg-green-100 m-10 px-10 py-5">
-      {users.map((user, index) => {
-        return (
-          <div key={index} className="my-5 bg-slate-200">
-            <div className="flex gap-5">
-              <Avatar className="h-6 w-6" />
-              <div>{user.email}</div>
-            </div>
-            <div className="">
-              <div>{user.questionHeader}</div>
-              <div>{user.question}</div>
-              <div>Solution</div>
-              <div>{user.answer}</div>
-            </div>
-            <div className="flex justify-between">
-              <div className="flex gap-4">
-                <BiUpvote className="size-5" />
-                <BiDownvote className="size-5" />
-                <MdOutlineModeComment className="size-5" />
+    <div>
+      <div className="">
+        <form action="" className="flex flex-col items-center gap-3 text-black" onSubmit={handleSubmitProblem}>
+          <input
+            placeholder="Question Header"
+            value={questionHeader}
+            onChange={(event) => setQuestionHeader(event.target.value)}
+          ></input>
+
+          <input
+            placeholder="Question"
+            value={question}
+            onChange={(event) => setQuestion(event.target.value)}
+          ></input>
+
+          <input
+            placeholder="Answer"
+            value={answer}
+            onChange={(event) => setAnswer(event.target.value)}
+          ></input>
+
+          <label htmlFor="public_select">Public or Private</label>
+          <select
+            id="public_select"
+            value={isPublic.toString()}
+            onChange={(event) => setIsPublic(event.target.value === "true")}
+          >
+            <option value="true">Public</option>
+            <option value="false">Private</option>
+          </select>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+      <div className="text-black bg-green-100 m-10 px-10 py-5">
+        {problemData.map((problem, index) => {
+          const initials = problem.email[0].toUpperCase();
+
+          const problemComments = commentsData.filter(
+            (comment) => comment.questionId === problem.questionId
+          );
+
+          return (
+            <div key={index} className="my-5 bg-slate-200">
+              <div className="flex gap-5">
+                <Avatar className="h-6 w-6" />
+                <div>{problem.email}</div>
               </div>
-              <IoArchiveOutline className="size-5" />
+              <div className="">
+                <div>{problem.questionHeader}</div>
+                <div>{problem.question}</div>
+                <div>Solution</div>
+                <div>{problem.answer}</div>
+              </div>
+              <div className="flex justify-between">
+                <div className="flex gap-4">
+                  <BiUpvote className="size-5" />
+                  <BiDownvote className="size-5" />
+                  <MdOutlineModeComment className="size-5" />
+                </div>
+                <IoArchiveOutline className="size-5" />
+              </div>
+              <div>
+                <Comments
+                  comments={problemComments}
+                  onCommentSubmit={handleCommentSubmit}
+                  questionId={problem.questionId}
+                />
+              </div>
             </div>
-            <div className="bg-red-50">
-              {user.comments.map((comment, idx) => {
-                return (
-                  <div key={idx} className="">
-                    <div className="flex gap-3">
-                      <Avatar className="size-5" />
-                      <div>{comment.email}</div>
-                    </div>
-                    <div>{comment.comment}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
-}
+};
+
+export default problems;

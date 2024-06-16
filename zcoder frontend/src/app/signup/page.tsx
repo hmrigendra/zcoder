@@ -10,7 +10,7 @@ export default function loginPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   // const [errorMessage, setErroMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -39,9 +39,10 @@ export default function loginPage() {
         <div className="p-4 m-6 text-lg">Welcome to ZCoder</div>
         <form className="flex flex-col justify-center items-center" onSubmit={handleSubmit}>
           <div className="w-full m-4">
-            <div className="text-xs">Email</div>
+            <label htmlFor="email" className="text-xs">Email</label>
             <input
               type="text"
+              id="email"
               placeholder=""
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -50,9 +51,10 @@ export default function loginPage() {
           </div>
 
           <div className="w-full m-4">
-            <div className="text-xs">Password</div>
+            <label htmlFor="password" className="text-xs">Password</label>
             <input
               type="text"
+              id="password"
               placeholder=""
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -61,9 +63,10 @@ export default function loginPage() {
           </div>
 
           <div className="w-full m-4">
-            <div className="text-xs">Confirm Password</div>
+            <label htmlFor="confirmPassword" className="text-xs">Confirm Password</label>
             <input
               type="text"
+              id="confirmPassword"
               placeholder=""
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

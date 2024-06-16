@@ -1,13 +1,14 @@
-interface commentData {
+export interface commentData {
     questionId: string;
   email: string;
   comment: string;
 }
 
-interface problemData {
+export interface problemData {
     questionId: string;
   email: string;
   questionHeader: string;
   question: string;
   answer: string;
+  isPublic: boolean;
 }
