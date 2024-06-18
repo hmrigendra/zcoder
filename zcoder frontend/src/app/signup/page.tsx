@@ -1,9 +1,12 @@
 'use client'
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function loginPage() {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,10 +29,12 @@ export default function loginPage() {
 
       console.log("Response: ", response.data);
 
+      router.push("/login");
+
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      
+
     } catch (error) {
       console.error("Error: ", error);
     }

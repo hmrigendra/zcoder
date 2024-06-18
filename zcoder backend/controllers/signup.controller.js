@@ -3,8 +3,19 @@ import Signup from "../models/signup.model.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import cors from "cors";
+import express from "express";
 
 dotenv.config();
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+}
+
+const app = express();
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(express.json());
 
 const signupData = async (req, res) => {
   try {
@@ -53,14 +64,18 @@ const loginData = async (req, res) => {
           }
         };
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+        // const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
 
-        res.cookie("token", token, {
-          httpOnly: true,
-          // secure: true,
-          // maxAge: 1000000,
-          // signed: true,
-        });
+        // res.cookie("token", token, {
+        //   httpOnly: true,
+        //   // secure: true,
+        //   // maxAge: 1000000,
+        //   // signed: true,
+        // });
+
+        // res.cookie("userEmail", email, {
+        //   httpOnly: true
+        // })
 
         res.status(200).json(existingUser);
 

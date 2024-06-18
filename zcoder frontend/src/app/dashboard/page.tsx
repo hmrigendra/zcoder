@@ -1,10 +1,29 @@
+"use client"
+
 import HamburgerMenu from "../(Components)/hamburgerMenu";
 import Problem from "../(Components)/problem";
 import AddProblem from "../(Components)/addProblem";
 import TopNavigation from "../(Components)/topNavigation";
+// import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-    return (
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.get("userEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);
+      console.log(storedEmail);
+    }
+    else {
+      console.log("Email not found in cookies");
+    }
+  }, []);
+
+  return (
+  
       <div className="flex">
         <div>
           <HamburgerMenu />
@@ -17,7 +36,7 @@ export default function Dashboard() {
             <AddProblem />
           </div>
           <div className="bg-green-50">
-            <Problem />
+            <Problem problemType="public"/>
           </div>
         </div>
       </div>

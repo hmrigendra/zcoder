@@ -1,4 +1,5 @@
 import Profile from "../models/profile.model.js";
+import Problem from "../models/problem.model.js";
 
 const createProfile = async (req, res) => {
     try {
@@ -47,7 +48,8 @@ const getSavedProblem = async (req, res) => {
   try {
     const { email } = req.params;
     const profile = await Profile.findOne({ email: email });
-    res.status(200).json(profile.savedProblems);
+    const savedProblems = await Problem.find({_id: {$in: profile.savedProblems}})
+    res.status(200).json(savedProblems);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

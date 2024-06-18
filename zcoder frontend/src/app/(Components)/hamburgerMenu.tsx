@@ -27,7 +27,7 @@ export default function HamburgerMenu() {
           <hr className="border" />
         </div>
 
-        <Link href={""}>
+        <Link href={"/dashboard"}>
           <div className="flex items-center pt-6 pb-4 px-5 gap-5">
             <div>
               <RiHome3Line className="size-6" />
@@ -44,7 +44,26 @@ export default function HamburgerMenu() {
             <div>Contest Calendar</div>
           </div>
         </Link>
+
+        <Link href={"/savedProblems"}>
+          <div className="flex items-center p-4 px-5 gap-5">
+            <div className="">
+              <TbCalendarEvent className="size-6" />
+            </div>
+            <div>Saved Problems</div>
+          </div>
+        </Link>
+
+        <Link href={"/userProblems"}>
+          <div className="flex items-center p-4 px-5 gap-5">
+            <div className="">
+              <TbCalendarEvent className="size-6" />
+            </div>
+            <div>My Problems</div>
+          </div>
+        </Link>
       </div>
+
       <div className="py-5 px-2">
         <Link href={""}>
           <div className="flex items-center p-4 px-5 gap-5">

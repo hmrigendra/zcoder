@@ -44,7 +44,12 @@ const problemsData: problemData[] = [
   // Add more problems as needed
 ];
 
-const problems: React.FC = () => {
+interface ProblemProps {
+  problemType: "public" | "saved" | "user";
+  email?: string;
+}
+
+const problems: React.FC<ProblemProps> = ({problemType, email}) => {
   
   // const [questionHeader, setQuestionHeader] = useState("");
   // const [question, setQuestion] = useState("");
@@ -90,7 +95,31 @@ const problems: React.FC = () => {
 
   const fetchProblems = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/problem/public");
+
+      let url = "";
+
+      if (problemType === "public") {
+        url =
+          `http://localhost:8000/api/problem/public`
+        
+      }
+
+            else if (problemType === "user" && email) {
+              url = 
+                `http://localhost:8000/api/problem/user/${email}`
+              
+      }
+      
+            else if (problemType === "saved" && email) {
+              url = 
+                `http://localhost:8000/api/profile/savedProblems/${email}`
+              
+      }
+
+      const response = await axios.get(
+        url
+      );
+      
 
       console.log("Fetched Problem Data: ", response.data);
 

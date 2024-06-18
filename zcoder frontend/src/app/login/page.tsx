@@ -1,9 +1,13 @@
 "use client"
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+
 export default function loginPage() {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,9 +19,13 @@ export default function loginPage() {
       const response = await axios.post("http://localhost:8000/api/signup/login", {
         email,
         password,
-      });
+      }, {withCredentials: true});
 
       console.log("Response: ", response.data);
+
+      localStorage.setItem("userEmail", email);
+
+      router.push("/dashboard");
 
       setEmail("");
       setPassword("");
