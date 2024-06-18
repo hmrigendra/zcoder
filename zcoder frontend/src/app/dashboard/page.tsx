@@ -1,5 +1,6 @@
 import HamburgerMenu from "../(Components)/hamburgerMenu";
 import Problem from "../(Components)/problem";
+import AddProblem from "../(Components)/addProblem";
 import TopNavigation from "../(Components)/topNavigation";
 
 export default function Dashboard() {
@@ -11,9 +12,12 @@ export default function Dashboard() {
         <div className="bg-red-50 w-full">
           <div>
             <TopNavigation />
-          </div >
+          </div>
+          <div>
+            <AddProblem />
+          </div>
           <div className="bg-green-50">
-            <Problem/>
+            <Problem />
           </div>
         </div>
       </div>

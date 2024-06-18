@@ -20,14 +20,14 @@ const getProblems = async (req, res) => {
 
 const getPublicProblems = async (req, res) => {
   try {
-      const problem = await Problem.find({ public: true});
+      const problem = await Problem.find({ isPublic: true});
     res.status(200).json(problem);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getMyProblems = async (req, res) => {
+const getUserProblems = async (req, res) => {
     try {
         const { email } = req.params;
     const problem = await Problem.find({ email });
@@ -47,4 +47,4 @@ const getProblem = async(req, res) => {
     }
 };
 
-export { createProblem, getProblem, getPublicProblems, getMyProblems, getProblems };
+export { createProblem, getProblem, getPublicProblems, getUserProblems, getProblems };

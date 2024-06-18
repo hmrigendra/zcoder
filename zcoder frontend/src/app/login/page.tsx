@@ -1,7 +1,32 @@
+"use client"
+import axios from "axios";
 import Link from "next/link";
-
+import { useState } from "react";
 
 export default function loginPage() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:8000/api/signup/login", {
+        email,
+        password,
+      });
+
+      console.log("Response: ", response.data);
+
+      setEmail("");
+      setPassword("");
+      
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="bg-white w-0 md:w-1/2  h-full hidden md:block">
@@ -17,33 +42,45 @@ export default function loginPage() {
             ZCoder
           </div>
           <div className="p-4 m-6 text-lg">Welcome to ZCoder</div>
-          <div className="w-1/2 m-4">
-            <div className="text-xs">Username or Email</div>
-            <input
-              type="text"
-              placeholder=""
-              className="border-b-2 w-full focus:outline-none py-1"
-            />
-          </div>
+          <form className="" onSubmit={handleSubmit}>
+            <div className="w-1/2 m-4">
+              <label htmlFor="email" className="text-xs">
+                Email
+              </label>
+              <input
+                id="email"
+                type="text"
+                placeholder=""
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border-b-2 w-full focus:outline-none py-1"
+              />
+            </div>
 
-          <div className="w-1/2">
-            <div className="text-xs">Password</div>
-            <input
-              type="text"
-              placeholder=""
-              className="bg-white border-b-2 w-full focus:outline-none py-1"
-            />
-          </div>
+            <div className="w-1/2">
+              <label htmlFor="password" className="text-xs">
+                Password
+              </label>
+              <input
+                id="password"
+                type="text"
+                placeholder=""
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-white border-b-2 w-full focus:outline-none py-1"
+              />
+            </div>
 
-          <div className="text-xs w-1/2 flex justify-end py-2">
-            <Link href={""} className="flex ">
-              Forgot Password?
-            </Link>
-          </div>
+            <div className="text-xs w-1/2 flex justify-end py-2">
+              <Link href={""} className="flex ">
+                Forgot Password?
+              </Link>
+            </div>
 
-          <button className="bg-gray-500 text-white py-1 px-10 mb-5 mt-2 rounded-2xl">
-            Sign in
-          </button>
+            <button type="submit" className="bg-gray-500 text-white py-1 px-10 mb-5 mt-2 rounded-2xl">
+              Sign in
+            </button>
+          </form>
 
           <div className="flex items-center justify-center mx-4 my-7">
             <div className="flex-grow border h-1px w-20 border-gray-400"></div>

@@ -25,6 +25,11 @@ export default function loginPage() {
       });
 
       console.log("Response: ", response.data);
+
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      
     } catch (error) {
       console.error("Error: ", error);
     }

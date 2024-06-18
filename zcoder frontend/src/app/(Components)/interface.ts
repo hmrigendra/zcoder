@@ -5,7 +5,7 @@ export interface commentData {
 }
 
 export interface problemData {
-    questionId: string;
+    _id: string;
   email: string;
   questionHeader: string;
   question: string;

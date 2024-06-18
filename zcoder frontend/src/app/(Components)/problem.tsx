@@ -44,72 +44,49 @@ const problemsData: problemData[] = [
   // Add more problems as needed
 ];
 
-const commentsData: commentData[] = [
-  {
-    questionId: "1",
-    email: "commenter1@example.com",
-    comment: "Interesting question! I never thought of this approach.",
-  },
-  {
-    questionId: "1",
-    email: "commenter2@example.com",
-    comment: "This solution is clever, but can you explain why it works?",
-  },
-  {
-    questionId: "1",
-    email: "commenter1@example.com",
-    comment: "Interesting question! I never thought of this approach.",
-  },
-  {
-    questionId: "3",
-    email: "commenter2@example.com",
-    comment: "This solution is clever, but can you explain why it works?",
-  },
-  // Add more comments as needed
-];
-
 const problems: React.FC = () => {
   
-  const [questionHeader, setQuestionHeader] = useState("");
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [isPublic, setIsPublic] = useState<boolean>(false);
+  // const [questionHeader, setQuestionHeader] = useState("");
+  // const [question, setQuestion] = useState("");
+  // const [answer, setAnswer] = useState("");
+  // const [isPublic, setIsPublic] = useState<boolean>(false);
   const [problemData, setProblemData] = useState<problemData[]>([]);
 
-  const [newCommentData, setNewCommentData] = useState<commentData[]>([]);
+  // const [newCommentData, setNewCommentData] = useState<commentData[]>([]);
 
-  const handleCommentSubmit = (comment: commentData) => {
-    const newComments = [...commentsData, comment];
-    setNewCommentData(newComments);
-  };
+  // const handleCommentSubmit = (comment: commentData) => {
+  //   const newComments = [...commentsData, comment];
+  //   setNewCommentData(newComments);
+  // };
 
-  const handleSubmitProblem = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // const handleSubmitProblem = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
 
-    const problemDataToSend: Omit<problemData, 'questionId'> = {
-      email: "user@example.com",
-      questionHeader,
-      question,
-      answer,
-      isPublic,
-    };
+  //   const problemDataToSend: Omit<problemData, '_id'> = {
+  //     email: "user@example.com",
+  //     questionHeader,
+  //     question,
+  //     answer,
+  //     isPublic,
+  //   };
 
-    try {
-      const response = await axios.post("http://localhost:8000/api/problem", problemDataToSend);
+  //   try {
+  //     const response = await axios.post("http://localhost:8000/api/problem", problemDataToSend);
 
-      console.log("Submitted Problem Data: ", response.data);
+  //     console.log("Submitted Problem Data: ", response.data);
 
-      setProblemData(prevProblemData => [...prevProblemData, response.data])
+  //     if(isPublic)
+  //       setProblemData(prevProblemData => [...prevProblemData, response.data])
 
-    } catch (error) {
-      console.error("Error: ", error);
-    }
+  //   } catch (error) {
+  //     console.error("Error: ", error);
+  //   }
 
-    setQuestionHeader("");
-    setQuestion("");
-    setAnswer("");
-    setIsPublic(false);
-  }
+  //   setQuestionHeader("");
+  //   setQuestion("");
+  //   setAnswer("");
+  //   setIsPublic(false);
+  // }
 
   const fetchProblems = async () => {
     try {
@@ -129,7 +106,7 @@ const problems: React.FC = () => {
 
   return (
     <div>
-      <div className="">
+      {/* <div className="">
         <form action="" className="flex flex-col items-center gap-3 text-black" onSubmit={handleSubmitProblem}>
           <input
             placeholder="Question Header"
@@ -166,14 +143,14 @@ const problems: React.FC = () => {
             Save
           </button>
         </form>
-      </div>
+      </div> */}
       <div className="text-black bg-green-100 m-10 px-10 py-5">
         {problemData.map((problem, index) => {
           const initials = problem.email[0].toUpperCase();
 
-          const problemComments = commentsData.filter(
-            (comment) => comment.questionId === problem.questionId
-          );
+          // const problemComments = commentsData.filter(
+          //   (comment) => comment.questionId === problem.questionId
+          // );
 
           return (
             <div key={index} className="my-5 bg-slate-200">
@@ -186,6 +163,7 @@ const problems: React.FC = () => {
                 <div>{problem.question}</div>
                 <div>Solution</div>
                 <div>{problem.answer}</div>
+                <div>{problem._id}</div>
               </div>
               <div className="flex justify-between">
                 <div className="flex gap-4">
@@ -195,13 +173,7 @@ const problems: React.FC = () => {
                 </div>
                 <IoArchiveOutline className="size-5" />
               </div>
-              <div>
-                <Comments
-                  comments={problemComments}
-                  onCommentSubmit={handleCommentSubmit}
-                  questionId={problem.questionId}
-                />
-              </div>
+              <div>{<Comments questionId={problem._id} />}</div>
             </div>
           );
         })}

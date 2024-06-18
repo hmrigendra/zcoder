@@ -8,6 +8,12 @@ const problemSchema = mongoose.Schema(
             required: [true]
         },
 
+        questionHeader:
+        {
+            type: String,
+            required: [true]
+            },
+
         question: {
             type: String,
             required: [true]
@@ -18,7 +24,7 @@ const problemSchema = mongoose.Schema(
             required: [true]
         },
 
-        public: {
+        isPublic: {
             type: Boolean,
             required: [true]
         }

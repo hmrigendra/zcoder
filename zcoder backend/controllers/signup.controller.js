@@ -1,6 +1,10 @@
+import jwt from "jsonwebtoken";
 import Signup from "../models/signup.model.js";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import cors from "cors";
 
+dotenv.config();
 
 const signupData = async (req, res) => {
   try {
@@ -21,6 +25,8 @@ const signupData = async (req, res) => {
 
       const signupData = await Signup.create(req.body);
       res.status(200).json(signupData);
+
+      return res.redirect("/login");
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -39,8 +45,26 @@ const loginData = async (req, res) => {
       //Comparing password with hashed password
       const isPasswordMatch = await bcrypt.compare(password, existingUser.password);
 
-      if(isPasswordMatch){
+      if (isPasswordMatch) {
+
+        const payload = {
+          user: {
+            email: existingUser.email,
+          }
+        };
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+
+        res.cookie("token", token, {
+          httpOnly: true,
+          // secure: true,
+          // maxAge: 1000000,
+          // signed: true,
+        });
+
         res.status(200).json(existingUser);
+
+        return res.redirect("/dashboard");
       }
       else {
         res.send({ message: "Password Incorrect." })
