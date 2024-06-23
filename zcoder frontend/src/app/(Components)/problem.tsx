@@ -10,46 +10,46 @@ import Comments from "./comment";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const problemsData: problemData[] = [
-  {
-    questionId: "1",
-    email: "randomized_1@email.com",
-    questionHeader: "Brain Teaser!",
-    question:
-      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
-    answer:
-      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
-    isPublic: true,
-  },
-  {
-    questionId: "2",
-    email: "randomized_1@email.com",
-    questionHeader: "Brain Teaser!",
-    question:
-      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
-    answer:
-      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
-    isPublic: true,
-  },
-  {
-    questionId: "3",
-    email: "randomized_1@email.com",
-    questionHeader: "Brain Teaser!",
-    question:
-      "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
-    answer:
-      "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
-    isPublic: true,
-  },
-  // Add more problems as needed
-];
+// const problemsData: problemData[] = [
+//   {
+//     questionId: "1",
+//     email: "randomized_1@email.com",
+//     questionHeader: "Brain Teaser!",
+//     question:
+//       "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+//     answer:
+//       "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+//     isPublic: true,
+//   },
+//   {
+//     questionId: "2",
+//     email: "randomized_1@email.com",
+//     questionHeader: "Brain Teaser!",
+//     question:
+//       "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+//     answer:
+//       "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+//     isPublic: true,
+//   },
+//   {
+//     questionId: "3",
+//     email: "randomized_1@email.com",
+//     questionHeader: "Brain Teaser!",
+//     question:
+//       "Find the sum of 35 and 13 using only multiplication (*) and division (/).",
+//     answer:
+//       "// This answer may vary depending on the chosen approach.\nThere might be multiple solutions. Here's one way:\n\n`cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << (35 * 13) / 13;\n  return 0;\n}\n`",
+//     isPublic: true,
+//   },
+//   // Add more problems as needed
+// ];
 
 interface ProblemProps {
   problemType: "public" | "saved" | "user";
-  email?: string;
+  email: string;
 }
 
-const problems: React.FC<ProblemProps> = ({problemType, email}) => {
+const problems: React.FC<ProblemProps> = ({ problemType, email }) => {
   
   // const [questionHeader, setQuestionHeader] = useState("");
   // const [question, setQuestion] = useState("");
@@ -104,15 +104,15 @@ const problems: React.FC<ProblemProps> = ({problemType, email}) => {
         
       }
 
-            else if (problemType === "user" && email) {
-              url = 
-                `http://localhost:8000/api/problem/user/${email}`
+      else if (problemType === "user" && email) {
+        url =
+          `http://localhost:8000/api/problem/user/${email}`
               
       }
       
-            else if (problemType === "saved" && email) {
-              url = 
-                `http://localhost:8000/api/profile/savedProblems/${email}`
+      else if (problemType === "saved" && email) {
+        url =
+          `http://localhost:8000/api/profile/savedProblems/${email}`
               
       }
 
@@ -131,7 +131,7 @@ const problems: React.FC<ProblemProps> = ({problemType, email}) => {
 
   useEffect(() => {
     fetchProblems();
-  }, []);
+  }, [problemType, email]);
 
   return (
     <div>
@@ -174,38 +174,42 @@ const problems: React.FC<ProblemProps> = ({problemType, email}) => {
         </form>
       </div> */}
       <div className="text-black bg-green-100 m-10 px-10 py-5">
-        {problemData.map((problem, index) => {
-          const initials = problem.email[0].toUpperCase();
+        {Array.isArray(problemData) && problemData.length === 0 ? (
+          <p>No Problems found</p>
+        ) : (
+          problemData.map((problem, index) => {
+            const initials = problem.email[0].toUpperCase();
 
-          // const problemComments = commentsData.filter(
-          //   (comment) => comment.questionId === problem.questionId
-          // );
+            // const problemComments = commentsData.filter(
+            //   (comment) => comment.questionId === problem.questionId
+            // );
 
-          return (
-            <div key={index} className="my-5 bg-slate-200">
-              <div className="flex gap-5">
-                <Avatar className="h-6 w-6" />
-                <div>{problem.email}</div>
-              </div>
-              <div className="">
-                <div>{problem.questionHeader}</div>
-                <div>{problem.question}</div>
-                <div>Solution</div>
-                <div>{problem.answer}</div>
-                <div>{problem._id}</div>
-              </div>
-              <div className="flex justify-between">
-                <div className="flex gap-4">
-                  <BiUpvote className="size-5" />
-                  <BiDownvote className="size-5" />
-                  <MdOutlineModeComment className="size-5" />
+            return (
+              <div key={index} className="my-5 bg-slate-200">
+                <div className="flex gap-5">
+                  <Avatar className="h-6 w-6" />
+                  <div>{problem.email}</div>
                 </div>
-                <IoArchiveOutline className="size-5" />
+                <div className="">
+                  <div>{problem.questionHeader}</div>
+                  <div>{problem.question}</div>
+                  <div>Solution</div>
+                  <div>{problem.answer}</div>
+                  <div>{problem._id}</div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex gap-4">
+                    <BiUpvote className="size-5" />
+                    <BiDownvote className="size-5" />
+                    <MdOutlineModeComment className="size-5" />
+                  </div>
+                  <IoArchiveOutline className="size-5" />
+                </div>
+                <div>{<Comments questionId={problem._id} email={email} />}</div>
               </div>
-              <div>{<Comments questionId={problem._id} />}</div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </div>
   );

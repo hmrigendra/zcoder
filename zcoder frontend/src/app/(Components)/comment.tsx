@@ -8,9 +8,10 @@ import axios from "axios";
 
 interface commentProps {
   questionId: string;
+  email: string,
 }
 
-const comments: React.FC<commentProps> = ({ questionId }) => {
+const comments: React.FC<commentProps> = ({ questionId, email }) => {
 
     const commentsData: commentData[] = [
       {
@@ -62,7 +63,7 @@ const comments: React.FC<commentProps> = ({ questionId }) => {
   const handleCommentSubmit = async () => {
     try {
       const commentToSend: commentData = {
-        email: "current@gmail.com",
+        email: email,
         comment: newComment,
         questionId,
       };
