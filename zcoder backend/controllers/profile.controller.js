@@ -48,6 +48,11 @@ const getSavedProblem = async (req, res) => {
   try {
     const { email } = req.params;
     const profile = await Profile.findOne({ email: email });
+
+        if (!profile.savedProblems || profile.savedProblems.length === 0) {
+          return res.status(200).json([]); // Return empty array if no saved problems
+    }
+    
     const savedProblems = await Problem.find({_id: {$in: profile.savedProblems}})
     res.status(200).json(savedProblems);
   } catch (error) {

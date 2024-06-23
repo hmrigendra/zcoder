@@ -21,5 +21,6 @@ app.use(express.json());
 
 router.post("/", signupData);
 router.post("/login", loginData);
+// router.get("/auth", authenticateCookie);
 
 export default router;
