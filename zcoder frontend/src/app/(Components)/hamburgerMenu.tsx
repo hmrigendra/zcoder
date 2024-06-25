@@ -6,10 +6,45 @@ import { TbCalendarEvent } from "react-icons/tb";
 import { HiOutlineLogout } from "react-icons/hi";
 import Link from "next/link";
 import { useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function HamburgerMenu() {
 
   const [open, setOpen] = useState(true);
+  const router = useRouter();
+
+  const logout = async () => {
+
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/signup/logout",
+        { withCredentials: true }
+      );
+
+      console.log("Response: ", response.data);
+
+      const { token } = response.data;
+      Cookies.set("token", token, { expires: 0 }); // Set the token in the cookie with the correct key
+      console.log("Received token:", token); // Log the token for debugging
+
+      const allCookies = Cookies.get();
+      console.log("All Cookies after setting token: ", allCookies);
+
+      // Use the same key to retrieve the token
+      const retrievedToken = Cookies.get("token");
+      console.log("Retrieved token:", retrievedToken);
+
+      localStorage.setItem("token", response.data.token);
+
+      router.push("/login");
+
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
 
   return (
     <div className="bg-gray-500 w-[300px] h-screen flex flex-col justify-between">
@@ -36,7 +71,7 @@ export default function HamburgerMenu() {
           </div>
         </Link>
 
-        <Link href={""}>
+        <Link href={"/contestCalendar"}>
           <div className="flex items-center p-4 px-5 gap-5">
             <div className="">
               <TbCalendarEvent className="size-6" />
@@ -65,13 +100,13 @@ export default function HamburgerMenu() {
       </div>
 
       <div className="py-5 px-2">
-        <Link href={""}>
-          <div className="flex items-center p-4 px-5 gap-5">
+        <Link href={"/login"}>
+          <button className="flex items-center p-4 px-5 gap-5" onClick={logout}>
             <div className="">
               <HiOutlineLogout className="size-6" />
             </div>
             <div>Logout</div>
-          </div>
+          </button>
         </Link>
       </div>
     </div>

@@ -7,6 +7,7 @@ import signupRoute from "./route/signup.route.js";
 import problemRoute from "./route/problem.route.js";
 import commentRoute from "./route/comment.route.js";
 import profileRoute from "./route/profile.route.js";
+import contestRoute from "./route/contest.route.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { requireAuth } from "./middleware/authMiddleware.js";
@@ -39,6 +40,7 @@ app.use('/api/signup', signupRoute);
 app.use('/api/problem', problemRoute);
 app.use('/api/comment', commentRoute);
 app.use('/api/profile', profileRoute);
+app.use("/api/contest", contestRoute);
 
 app.get("/api/authentication", requireAuth, (req, res) => {
   // res.json("okokok")

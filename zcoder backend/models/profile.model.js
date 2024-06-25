@@ -1,28 +1,31 @@
 import mongoose from "mongoose";
 
-const profileSchema = mongoose.Schema(
-    {
-        email: {
-            type: String,
-            required: [true, "Email is required."]
-        },
+const profileSchema = mongoose.Schema({
+  email: {
+    type: String,
+    required: [true, "Email is required."],
+  },
 
-        cfProfile: {
-            type: String,
-            required: false
-        },
+  username: {
+    type: String,
+    required: [true, "Username is required."],
+  },
 
-        techStacks: {
-            type: [String],
-            required: false
-        },
-        
-        savedProblems: {
-            type: [String],
-            required: false
-        }
-    }
-)
+  codeforcesHandle: {
+    type: String,
+    required: false,
+  },
+
+  techStacksArray: {
+    type: [String],
+    required: false,
+  },
+
+  savedProblems: {
+    type: [String],
+    required: false,
+  },
+});
 
 const profile = mongoose.model("Profile", profileSchema);
 

@@ -7,35 +7,35 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface commentProps {
-  questionId: string;
+  questionId: string,
   email: string,
 }
 
 const comments: React.FC<commentProps> = ({ questionId, email }) => {
 
-    const commentsData: commentData[] = [
-      {
-        questionId: "1",
-        email: "commenter1@example.com",
-        comment: "Interesting question! I never thought of this approach.",
-      },
-      {
-        questionId: "1",
-        email: "commenter2@example.com",
-        comment: "This solution is clever, but can you explain why it works?",
-      },
-      {
-        questionId: "1",
-        email: "commenter1@example.com",
-        comment: "Interesting question! I never thought of this approach.",
-      },
-      {
-        questionId: "3",
-        email: "commenter2@example.com",
-        comment: "This solution is clever, but can you explain why it works?",
-      },
-      // Add more comments as needed
-    ];
+    // const commentsData: commentData[] = [
+    //   {
+    //     questionId: "1",
+    //     email: "commenter1@example.com",
+    //     comment: "Interesting question! I never thought of this approach.",
+    //   },
+    //   {
+    //     questionId: "1",
+    //     email: "commenter2@example.com",
+    //     comment: "This solution is clever, but can you explain why it works?",
+    //   },
+    //   {
+    //     questionId: "1",
+    //     email: "commenter1@example.com",
+    //     comment: "Interesting question! I never thought of this approach.",
+    //   },
+    //   {
+    //     questionId: "3",
+    //     email: "commenter2@example.com",
+    //     comment: "This solution is clever, but can you explain why it works?",
+    //   },
+    //   // Add more comments as needed
+    // ];
 
 
   const [commentData, setCommentData] = useState<commentData[]>([]);
@@ -82,7 +82,7 @@ const comments: React.FC<commentProps> = ({ questionId, email }) => {
       setNewComment("");
     } catch (error) {
       console.error("Error submitting comment: ",
-        error,
+        error
       );
     }
   };

@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 export default function loginPage() {
 
@@ -22,14 +23,31 @@ export default function loginPage() {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/signup", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/signup",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       console.log("Response: ", response.data);
 
-      router.push("/login");
+      const { token } = response.data;
+      Cookies.set("token", token, { expires: 1 }); // Set the token in the cookie with the correct key
+      console.log("Received token:", token); // Log the token for debugging
+
+      const allCookies = Cookies.get();
+      console.log("All Cookies after setting token: ", allCookies);
+
+      // Use the same key to retrieve the token
+      const retrievedToken = Cookies.get("token");
+      console.log("Retrieved token:", retrievedToken);
+
+      localStorage.setItem("token", response.data.token);
+
+      router.push("/accountSetup");
 
       setEmail("");
       setPassword("");

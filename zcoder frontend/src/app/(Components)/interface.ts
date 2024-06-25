@@ -5,10 +5,13 @@ export interface commentData {
 }
 
 export interface problemData {
-    _id: string;
+  _id: string;
   email: string;
   questionHeader: string;
   question: string;
   answer: string;
   isPublic: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }

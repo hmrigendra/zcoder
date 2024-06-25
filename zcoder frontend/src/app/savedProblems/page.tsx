@@ -43,13 +43,13 @@ export default function savedProblems() {
       //   }
       // );
 
-      console.log("error message", response);
+      console.log("response email is here: ", response.data.email);
 
       if (response.status === 200) {
         console.log(response);
         const data = response.data;
         setEmail(data.email);
-        console.log(data);
+        console.log("email isssss: ", data.email);
       } else {
         console.log("Error fetching dashboard data");
       }
@@ -72,9 +72,14 @@ export default function savedProblems() {
         <div>
           <TopNavigation />
         </div>
+        {email ? (
         <div className="bg-green-50">
           <Problem problemType="saved" email={email} />
-        </div>
+          </div>
+        ) : (
+            <div>Loading...</div>
+        )
+          }
       </div>
     </div>
   );

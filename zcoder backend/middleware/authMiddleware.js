@@ -17,7 +17,7 @@ const requireAuth = (req, res, next) => {
             if (err) {
                 console.log("it is an error")
                 console.log(err.message);
-                res.redirect("/login");
+                // res.redirect("/login");
             }
             else {
                 console.log("error nahi hai")
@@ -29,7 +29,7 @@ const requireAuth = (req, res, next) => {
     }
     else {
         res.status(401).send("Unauthorized");
-        res.redirect('/login');
+        // res.redirect('/login');
     }
 
 }

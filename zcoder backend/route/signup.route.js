@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { signupData, loginData } from "../controllers/signup.controller.js";
+import { signupData, loginData, logout } from "../controllers/signup.controller.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -21,6 +21,7 @@ app.use(express.json());
 
 router.post("/", signupData);
 router.post("/login", loginData);
+router.get("/logout", logout);
 // router.get("/auth", authenticateCookie);
 
 export default router;

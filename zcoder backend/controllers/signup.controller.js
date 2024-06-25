@@ -24,23 +24,48 @@ const signupData = async (req, res) => {
   try {
 
     //Checking for existing user
-    const { email } = req.body;
+    const { email, password } = req.body;
     const existingUser = await Signup.findOne({ email });
 
     if (existingUser) {
       res.send({ message: "Email already exists. Try another email" })
     }
     else {
-
       //Hashing password
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
       req.body.password = hashedPassword;
 
       const signupData = await Signup.create(req.body);
-      res.status(200).json(signupData);
+      
+
+      const user = {
+        email: email,
+      };
+
+      const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1h",
+      });
+
+      // res.json({ token: token });
+
+      res.cookie("token", token, {
+        // httpOnly: true,
+        // secure: process.env.NODE_ENV === "production",
+        // secure: true,
+        maxAge: 1000 * 60 * 60,
+        // signed: true,
+      });
+
+      // res.cookie("userEmail", email, {
+      //   httpOnly: true
+      // });
+
+      // console.log(token);
 
       // return res.redirect("/login");
+
+      res.status(200).json({ token });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -77,7 +102,7 @@ const loginData = async (req, res) => {
           // httpOnly: true,
           // secure: process.env.NODE_ENV === "production",
           // secure: true,
-          // maxAge: 1000 * 60 * 60,
+          maxAge: 1000 * 60 * 60,
           // signed: true,
         });
 
@@ -121,4 +146,29 @@ const loginData = async (req, res) => {
 //   })
 // }
 
-export { signupData, loginData };
+const logout = async (req, res) => {
+  try {
+
+    const expiresDate = new Date();
+    expiresDate.setDate(expiresDate.getDate() - 1);
+
+    res.cookie("token", "", {
+      // httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",
+      // secure: true,
+      expires: new Date(0),
+      maxAge: 0,
+      // signed: true,
+    });
+
+    res.clearCookie("token");
+
+    res.status(200).json({ message: "Logout successful" });
+
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  }
+  
+}
+
+export { signupData, loginData, logout };

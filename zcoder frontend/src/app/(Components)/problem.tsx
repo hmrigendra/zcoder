@@ -4,11 +4,12 @@ import { Avatar } from "@nextui-org/avatar";
 import { BiUpvote } from "react-icons/bi";
 import { BiDownvote } from "react-icons/bi";
 import { MdOutlineModeComment } from "react-icons/md";
-import { IoArchiveOutline } from "react-icons/io5";
 import { problemData, commentData } from "./interface";
 import Comments from "./comment";
+import SaveProblem from "./saveProblem";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import savedProblems from "../savedProblems/page";
 
 // const problemsData: problemData[] = [
 //   {
@@ -116,9 +117,9 @@ const problems: React.FC<ProblemProps> = ({ problemType, email }) => {
               
       }
 
-      const response = await axios.get(
-        url
-      );
+      const response = await axios.get(url);
+
+      console.log(url);
       
 
       console.log("Fetched Problem Data: ", response.data);
@@ -203,7 +204,7 @@ const problems: React.FC<ProblemProps> = ({ problemType, email }) => {
                     <BiDownvote className="size-5" />
                     <MdOutlineModeComment className="size-5" />
                   </div>
-                  <IoArchiveOutline className="size-5" />
+                  <SaveProblem questionId={problem._id} email={email} />
                 </div>
                 <div>{<Comments questionId={problem._id} email={email} />}</div>
               </div>
