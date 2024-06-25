@@ -11,6 +11,8 @@ import {
   TableCell,
   getKeyValue,
 } from "@nextui-org/table";
+import TopNavigation from "../(Components)/topNavigation";
+import HamburgerMenu from "../(Components)/hamburgerMenu";
 
 interface Contest {
   id: number;
@@ -172,36 +174,46 @@ export default function contestCalendar() {
 
 
   return (
-    <div>
-      <Table aria-label="Contest Calendar">
-        <TableHeader>
-          {/* {(column: any) => (
+    <div className="flex">
+      <div>
+        <HamburgerMenu />
+      </div>
+      <div className="bg-red-50 w-full">
+        <div>
+          <TopNavigation />
+        </div>
+        <div className="text-black">
+          <Table aria-label="Contest Calendar">
+            <TableHeader>
+              {/* {(column: any) => (
               <TableColumn key={column.key}>{column.label}</TableColumn>
             )} */}
-          {columns.map((column) => (
-            <TableColumn key={column.key}>{column.label}</TableColumn>
-          ))}
-        </TableHeader>
+              {columns.map((column) => (
+                <TableColumn key={column.key}>{column.label}</TableColumn>
+              ))}
+            </TableHeader>
 
-        <TableBody items={contestList}>
-          {(item: Contest) => (
-            <TableRow key={item._id}>
-              {/* {(columnKey: any) => (
+            <TableBody items={contestList}>
+              {(item: Contest) => (
+                <TableRow key={item._id}>
+                  {/* {(columnKey: any) => (
                   <TableCell>{getKeyValue(item, columnKey)}</TableCell>
                 )} */}
-              {columns.map((column) => (
-                <TableCell key={column.key}>
-                  {column.key === "startTime"
-                    ? convertUnixTimeStamp(item[column.key])
-                    : column.key === "duration"
-                    ? convertDuration(item[column.key])
-                    : item[column.key]}
-                </TableCell>
-              ))}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+                  {columns.map((column) => (
+                    <TableCell key={column.key}>
+                      {column.key === "startTime"
+                        ? convertUnixTimeStamp(item[column.key])
+                        : column.key === "duration"
+                        ? convertDuration(item[column.key])
+                        : item[column.key]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </div>
   );
 }
